@@ -35,10 +35,9 @@ def robots(url):
 
 print(robots(URL_principal))
 
-log_in = open('Login/Credentials.txt')
-credentials = log_in.readlines()
-user = credentials[0]
-password = credentials[1]
+
+user = 'tipologia.uoc.2022@gmail.com'
+password = 'TIPOPRA1'
 
 driver.get(URL)
 sleep(1)
