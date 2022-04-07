@@ -36,7 +36,9 @@ def robots(url):
 print(robots(URL_principal))
 
 log_in = open('Login/Credentials.txt')
-
+credentials = log_in.readlines()
+user = credentials[0]
+password = credentials[1]
 
 driver.get(URL)
 sleep(1)
@@ -50,7 +52,7 @@ sleep(2)
 
 # Inserción del nombre de usuario:
 input_user = driver.find_element(By.XPATH, "//input[@aria-label='Correo electrónico o teléfono']")
-input_user.send_keys(log_in[user])
+input_user.send_keys(user)
 sleep(2)
 
 # Click en el botón de Siguiente:
@@ -60,7 +62,7 @@ sleep(2)
 
 # Insertamos el password:
 input_pass = driver.find_element(By.XPATH, "//input[@aria-label='Introduce tu contraseña']")
-input_pass.send_keys(log_in[password])
+input_pass.send_keys(password)
 sleep(2)
 
 # Click en el botón de Siguiente:
