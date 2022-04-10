@@ -14,6 +14,7 @@ Téndencias en YouTube: https://www.youtube.com/feed/trending?bp=6gQJRkVleHBsb3J
 
 ### Pasos para ejecutar el código 
 
+```bash
 
 $ git clone  https://github.com/ncalderonm/Proyecto_PRA1.git
 
@@ -22,6 +23,8 @@ $ cd Proyecto PRA1
 $ pip install -r requirements.txt
 
 $ python WebScraping_Youtube.py
+
+```
 
 ### Resultados del Web Scrapping
 
