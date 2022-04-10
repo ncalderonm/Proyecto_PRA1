@@ -3,7 +3,7 @@
 ## Componentes del grupo
 
 1. Nerea Calderón Mulero
-2. David Cisnero Martínez
+2. David Cisneros Martínez
 
 ##  Objetivos del proyecto
 
