@@ -26,7 +26,7 @@ $ python WebScraping_Youtube.py
 
 ```
 
-## Resultados del Web Scrapping
+## Resultados del Web Scraping
 
 Los resultados se almacenan en un csv dentro de la carpeta Dataset con el nombre "youtube" acompañado de la fecha de creación del csv. El csv de ejemplo se encuentra con el nombre "youtube2022-04-10.csv".
 
