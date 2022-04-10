@@ -12,11 +12,9 @@ import pandas as pd
 import random
 import csv
 import datetime as dt
+import os
+from bs4 import BeautifulSoup
 
-
-# Abrir el navegador con la URL
-s = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=s)
 
 # URL
 URL = 'https://www.youtube.com/feed/trending?bp=6gQJRkVleHBsb3Jl'
@@ -36,7 +34,78 @@ def robots(url):
 print(robots(URL_principal))
 
 
+# Analizamos y visualizamos el sitemap:
+sitemap = "https://www.youtube.com/trends/sitemap.xml"
+
+response = requests.get(URL)
+with open('./sitemap.xml', 'wb') as file:
+    file.write(response.content)
+
+xml_sm = "./sitemap.xml"
+
+xml = BeautifulSoup(open(xml_sm, encoding="utf8"), "lxml")
+xml_content = xml.prettify()
+print(xml_content)
+
+'''
+import xml.dom.minidom
+
+dom = xml.dom.minidom.parse(file='../sitemap.xml')
+pretty_xml_as_string = dom.toprettyxml()
+print(pretty_xml_as_string)'''
+
+# Tecnología usada:
+import builtwith
+
+tech = builtwith.builtwith(URL_principal)
+print(tech)
+
+
+# Propietario de la página:
+import whois
+
+print(whois.whois("https://sullygnome.com/"))
+
+
+
 # Credentials:
+user = 'tipologia.uoc.2022@gmail.com'
+password = 'TIPOPRA1'
+
+# Abrir el navegador con la URL
+s = Service(ChromeDriverManager().install())
+driver = webdriver.Chrome(service=s)
+
+driver.get(URL)
+sleep(1)
+driver.maximize_window()
+sleep(2)
+
+# Click en el botón de login:
+driver.find_element_by_xpath("""//*[@id="yDmH0d"]/c-wiz/div/div/div/div[1]/div[1]/div/div/a""").click()
+sleep(2)
+
+# Inserción del nombre de usuario:
+input_user = driver.find_element(By.XPATH, "//input[@aria-label='Correo electrónico o teléfono']")
+input_user.send_keys(user)
+sleep(2)
+
+# Click en el botón de Siguiente:
+next_button = driver.find_element_by_xpath("""//*[@id="identifierNext"]/div/button/span""")
+next_button.click()
+sleep(2)
+
+# Insertamos el password:
+input_pass = driver.find_element(By.XPATH, "//input[@aria-label='Introduce tu contraseña']")
+input_pass.send_keys(password)
+sleep(2)
+
+# Click en el botón de Siguiente:
+next_button = driver.find_element_by_xpath("""//*[@id="passwordNext"]/div/button/span""")
+next_button.click()
+sleep(5)
+
+# Aceptar para dar consentimiento en el uso de cookies y datos:
 # consent_button_xpath = "//button[@aria-label='Aceptar el uso de cookies y otros datos para las finalidades descritas']"
 # consent = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, consent_button_xpath)))
 
@@ -61,14 +130,14 @@ videos.pop(0)
 # Obtener información de cada video
 # diccionario = []
 data = pd.DataFrame(columns=["Url_Video", "Title", "Trending_Position", "Visualizations",
-                             "Date", "Likes", "Subscribers", "Chanel", "Url_Chanel", "Comments",
+                             "Date", "Likes", "Subscribers", "Channel", "Url_Channel", "Comments",
                              "Type", "Length"])
 
 # Función para generación del dataset del top n de videos, por defecto top10:
 def top_videos(n = 10):
     # Creamos el DataFrame donde guardaremos la información, declarando sus columnas:
     data = pd.DataFrame(columns=["Url_Video", "Title", "Trending_Position", "Visualizations",
-                                 "Date", "Likes", "Subscribers", "Chanel", "Url_Chanel", "Comments",
+                                 "Date", "Likes", "Subscribers", "Channel", "Url_Channel", "Comments",
                                  "Type", "Length"])
     time_video = sleep(random.uniform(3, 3.5))
     position = 0
@@ -96,8 +165,8 @@ def top_videos(n = 10):
                 "aria-label")
             subscribers = driver.find_element(by=By.XPATH, value="""//*[@id="owner-sub-count"]""").text
 
-            chanel = driver.find_element(by=By.XPATH, value="""//*[@id="text"]/a""").text
-            url_chanel = driver.find_element(by=By.XPATH, value="""//*[@id="text"]/a""").get_attribute("href")
+            channel = driver.find_element(by=By.XPATH, value="""//*[@id="text"]/a""").text
+            url_channel = driver.find_element(by=By.XPATH, value="""//*[@id="text"]/a""").get_attribute("href")
             comments = driver.find_element(by=By.XPATH, value="""//*[@id="count"]""").text
             tipo = driver.find_element(by=By.XPATH, value="""//*[@id="watch7-content"]/meta[16]""").get_attribute("content")
             length = driver.find_element(by=By.XPATH, value="""//*[@id="watch7-content"]/meta[6]""").get_attribute("content")
@@ -105,14 +174,14 @@ def top_videos(n = 10):
 
             data = data.append({"Url_Video": video, "Title": title,
                                 "Trending_Position": position, "Visualizations": visualizations,
-                                "Date": date, "Likes": likes, "Subscribers": subscribers, "Chanel": chanel,
-                                "Url_Chanel": url_chanel,
+                                "Date": date, "Likes": likes, "Subscribers": subscribers, "Channel": channel,
+                                "Url_Channel": url_channel,
                                 "Comments": comments, "Type": tipo, "Length": length, "#Tag": label}
                                , ignore_index=True)
     return data
 
 # Ejecutamos la función, y encapsulamos su resultado en "data":
-data = top_videos(30)
+data = top_videos(50)
 
 
 # Función para creación de CSV:
@@ -120,7 +189,7 @@ def csv_file(df):
     with open('Dataset/youtube'  + str(dt.date.today()) + '.csv', 'w', newline='', encoding="utf16") as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';')
         header = ["Url_Video", "Title", "Trending_Position", "Visualizations",
-                  "Date", "Likes", "Subscribers", "Chanel", "Url_Chanel", "Comments",
+                  "Date", "Likes", "Subscribers", "Channel", "Url_Channel", "Comments",
                   "Type", "Length", "#Tag"]
         spamwriter.writerow(header)
         for row in range(len(data)):
