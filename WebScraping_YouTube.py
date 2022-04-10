@@ -64,7 +64,7 @@ print(tech)
 # Propietario de la página:
 import whois
 
-print(whois.whois("https://sullygnome.com/"))
+print(whois.whois(URL_principal))
 
 
 
@@ -105,17 +105,7 @@ next_button = driver.find_element_by_xpath("""//*[@id="passwordNext"]/div/button
 next_button.click()
 sleep(5)
 
-# Aceptar para dar consentimiento en el uso de cookies y datos:
-# consent_button_xpath = "//button[@aria-label='Aceptar el uso de cookies y otros datos para las finalidades descritas']"
-# consent = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, consent_button_xpath)))
 
-# consent = driver.find_element_by_xpath(consent_button_xpath)
-# consent.click()
-
-
-# Apply delay
-# driver.implicitly_wait(TimeOut)
-# print(agent)
 
 # Obtener los videos
 elements = driver.find_elements_by_xpath("""//*[@id="thumbnail"]""")
