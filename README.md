@@ -15,7 +15,6 @@ Téndencias en YouTube: https://www.youtube.com/feed/trending?bp=6gQJRkVleHBsb3J
 ## Pasos para ejecutar el código 
 
 ```bash
-
 $ git clone  https://github.com/ncalderonm/Proyecto_PRA1.git
 
 $ cd Proyecto PRA1
@@ -23,7 +22,6 @@ $ cd Proyecto PRA1
 $ pip install -r requirements.txt
 
 $ python WebScraping_Youtube.py
-
 ```
 
 ## Resultados del Web Scraping
@@ -32,7 +30,11 @@ Los resultados se almacenan en un csv dentro de la carpeta Dataset con el nombre
 
 Esta fecha se generará automáticamente dependiendo del día de ejecución del código. 
 
-## Dataset publicado en Zenozo
+## Dataset publicado en Zenodo
+
+URL Zenodo: https://doi.org/10.5281/zenodo.6445619
+
+
 
 
 
